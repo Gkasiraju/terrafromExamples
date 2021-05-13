@@ -1,23 +1,20 @@
+# Configure the Azure provider
 terraform {
   required_providers {
-    docker = {
-      source = "kreuzwerker/docker"
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = ">= 2.26"
     }
   }
+
+  required_version = ">= 0.14.9"
 }
 
-provider "docker" {}
-
-resource "docker_image" "nginx" {
-  name         = "nginx:latest"
-  keep_locally = false
+provider "azurerm" {
+  features {}
 }
 
-resource "docker_container" "nginx" {
-  image = docker_image.nginx.latest
-  name  = "tutorial"
-  ports {
-    internal = 80
-    external = 8000
-  }
+resource "azurerm_resource_group" "rg" {
+  name     = "jenkinsResourceGroup"
+  location = "westus"
 }
